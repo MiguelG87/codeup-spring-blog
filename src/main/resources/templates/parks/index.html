@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parks</title>
+</head>
+<body>
+  <h1>Welcome <span th:text="${user}"></span> to the Nature Zone</h1>
+  <h1 th:if="${parks.isEmpty()}">No Parks have been found</h1>
+<ul>
+<!--  <li th:text="${banff.name}">Test</li>-->
+<!--    <small th:text="${banff.location}">Test</small>-->
+<!--  <li th:text="${badlands.name}">Test</li>-->
+<!--    <small th:text="${badlands.location}">Test</small>-->
+<!--  <li th:text="${whiteSands.name}">Test</li>-->
+<!--    <small th:text="${whiteSands.location}">Test</small>-->
+    <th:block th:each="parks: ${parks}">
+        <li th:text="${parks.name}"></li>
+        <small  th:text="${parks.location}"></small>
+    </th:block>
+</ul>
+
+</body>
+</html>
