@@ -1,56 +1,75 @@
 package com.codeup.codeupspringblog.controllers;
 
 import com.codeup.codeupspringblog.models.Park;
+import com.codeup.codeupspringblog.models.State;
+import com.codeup.codeupspringblog.repositories.ParkRepository;
+import com.codeup.codeupspringblog.repositories.StateRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+// Tells the compiler that this class will extend HttpServlet and setup our class to control different URI patterns.
 @Controller
 public class TestController {
-    //Get Request Mapping for /test
-    @GetMapping("/test")
-    //Set Response content type to text/html
-    @ResponseBody
-    //define method that will return text/html
-    public String test() {
-        return "Hello Kotlin";
+
+    private final ParkRepository parksDao;
+    private final StateRepository statesDao;
+    public TestController(ParkRepository parksDao, StateRepository statesDao) {
+        this.parksDao = parksDao;
+        this.statesDao = statesDao;
     }
+
+    // Get Request Mapping for /test
+    @GetMapping("/test")
+    // Set Response content type to text/html
+    @ResponseBody
+    // define method that will return text/html
+    public String test() {
+        return "Hello Kotlin!";
+    }
+
 
     // /parks
     @GetMapping("/parks/{park}/{message}")
     @ResponseBody
     public String parks(@PathVariable String park, @PathVariable String message) {
-        return "<h1>Welcome to " + park +  "!</h1><br><p>" + message + ".</p>";
+        return "<h1>Welcome to " + park + "!</h1><p>" + message + "</p>";
     }
 
-    @GetMapping("/parks/{user}")
-    public String parks(@PathVariable String user, Model model) {
-        Park p1 = new Park("Banff National Park", "Banff");
-        Park p2 = new Park("Badlands National Park", "South Dakota");
-        Park p3 = new Park("White Sands National Park", "New Mexico");
-
-
-        List<Park> parks = new ArrayList<>();
-        parks.add(p1);
-        parks.add(p2);
-        parks.add(p3);
-
-//        model.addAttribute("banff", p1);
-//        model.addAttribute("badlands", p2);
-//        model.addAttribute("whiteSands", p3);
-
-        model.addAttribute("user", user);
+    @GetMapping("/parks")
+    public String parks(Model model) {
+        List<Park> parks = parksDao.findAll();
         model.addAttribute("parks", parks);
-
-
-        return "/parks/index";
+        return "parks/index";
     }
 
+    @GetMapping("/park")
+    public String park(Model model) {
+        Park byName = parksDao.findByName("Big Bend National Park");
+        model.addAttribute("park", byName);
+        return "parks/show";
+    }
 
+    @GetMapping("/parks/create")
+    public String showParksForm(Model model) {
+        model.addAttribute("states", statesDao.findAll());
+        return "parks/create";
+    }
 
+    @PostMapping("/parks/create")
+    public String submitNewPark(@RequestParam String name, @RequestParam long stateId) {
+        // Spring Recommended syntax for .findById() method.
+
+        if(statesDao.findById(stateId).isPresent()) {
+            State state = statesDao.findById(stateId).get();
+            Park newPark = new Park(name, state);
+            parksDao.save(newPark);
+
+        }
+        return "redirect:/parks";
+    }
 
     @RequestMapping(path = "/increment/{number}", method = RequestMethod.GET)
     @ResponseBody
@@ -58,14 +77,16 @@ public class TestController {
         return number + " plus one is " + (number + 1) + "!";
     }
 
+
     @GetMapping("/join")
-    public String join() {
+    public String showJoinForm() {
         return "join";
     }
+
     @PostMapping("/join")
     public String submitCohortForm(@RequestParam String cohort, Model model) {
         model.addAttribute("cohort", cohort);
         return "join";
     }
-}
 
+}

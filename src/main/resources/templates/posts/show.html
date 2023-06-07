@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- To include custom CSS use the following-->
-    <link th:href="@{css/main.css}" rel="stylesheet">
-</head>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="partials/partials :: head"></head>
 <body>
-<header th:replace="partials/partials :: navbar"></header>
-<nav th:replace="partials/partials :: header"></nav>
+<nav th:replace="partials/partials :: navbar"></nav>
+<header th:replace="partials/partials :: header"></header>
 <th:block th:each="post: ${post}">
-    <li th:text="${post.title}"></li>
-    <small  th:text="${post.body}"></small>
+    <small><strong>Title: </strong></small>
+    <small th:text="${post.title}"></small><br>
+    <small><strong>Username: </strong></small>
+    <small  th:text="${post.user.username}"></small><br>
+    <small><strong>Email: </strong></small>
+    <small  th:text="${post.user.email}"></small><br>
+    <small><strong>Body: </strong></small>
+    <small th:text="${post.body}"></small><br>
+    <small><strong>Categories: </strong></small>
+    <small th:each="category: ${post.categories}" th:text="${category.name}"></small><br><br>
 </th:block>
 <footer th:replace="partials/partials :: footer"></footer>
 </body>
