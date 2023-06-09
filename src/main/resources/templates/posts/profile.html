@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="partials/partials :: head"></head>
+<body>
+<header th:replace="partials/partials :: navbar"></header>
+<nav th:replace="partials/partials :: header"></nav>
+<h1>Profile</h1>
+<div sec:authorize="isAuthenticated()">
+    Username: <span th:text="${#authentication.principal.username}"/><br><br>
+    Email: <span th:text="${#authentication.principal.email}"/><br><br>
+    <th:block th:each="post: ${posts}">
+        <h1 th:text="${post.title}"></h1>
+        <p th:text="${post.body}"></p>
+    </th:block>
+</div>
+<footer th:replace="partials/partials :: footer"></footer>
+</body>
+</html>

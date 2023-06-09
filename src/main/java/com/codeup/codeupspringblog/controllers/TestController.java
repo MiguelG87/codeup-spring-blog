@@ -55,19 +55,13 @@ public class TestController {
     @GetMapping("/parks/create")
     public String showParksForm(Model model) {
         model.addAttribute("states", statesDao.findAll());
+        model.addAttribute("park", new Park());
         return "parks/create";
     }
 
     @PostMapping("/parks/create")
-    public String submitNewPark(@RequestParam String name, @RequestParam long stateId) {
-        // Spring Recommended syntax for .findById() method.
-
-        if(statesDao.findById(stateId).isPresent()) {
-            State state = statesDao.findById(stateId).get();
-            Park newPark = new Park(name, state);
-            parksDao.save(newPark);
-
-        }
+    public String submitNewPark(@ModelAttribute Park park) {
+        parksDao.save(park);
         return "redirect:/parks";
     }
 

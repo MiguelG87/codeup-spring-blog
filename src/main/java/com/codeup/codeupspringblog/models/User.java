@@ -13,17 +13,25 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(nullable = false, length = 25)
+    private Long id;
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
     private String username;
-    @Column(nullable = false, length = 25)
-    private String password;
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
     private String email;
+    @Column(nullable = false)
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     List<Post> posts;
+
+    public User(User copy) {
+        this.id = copy.id;
+        this.email = copy.email;
+        this.username = copy.username;
+        this.password = copy.password;
+    }
 }

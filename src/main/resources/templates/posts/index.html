@@ -5,8 +5,7 @@
 <header th:replace="partials/partials :: navbar"></header>
 <nav th:replace="partials/partials :: header"></nav>
 <th:block th:each="post: ${posts}">
-    <h1 th:text="${post.title}"></h1>
-    <p th:text="${post.body}"></p>
+    <h1><a th:href="@{/posts/{id}( id = ${post.id})}" th:text="${post.title}"></a></h1>
 </th:block>
 <footer th:replace="partials/partials :: footer"></footer>
 </body>
