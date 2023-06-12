@@ -26,6 +26,12 @@ public class PostController {
         this.emailService = emailService;
     }
 
+    @GetMapping("/")
+    public String landing(Model model) {
+        model.addAttribute("posts", postsDao.findAll());
+        return "posts/index";
+    }
+
     @GetMapping("/posts")
     public String viewPosts(Model model) {
         model.addAttribute("posts", postsDao.findAll());
@@ -59,7 +65,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     public String showEditForm(@PathVariable long id, Model model) {
-        if(postsDao.findById(id).isPresent()) {
+        if (postsDao.findById(id).isPresent()) {
             Post postToEdit = postsDao.findById(id).get();
             model.addAttribute("post", postToEdit);
         }
@@ -68,7 +74,7 @@ public class PostController {
 
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@ModelAttribute Post newPost) {
-        User user = userDao.findById(1L).get();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         newPost.setUser(user);
         postsDao.save(newPost);
         return "redirect:/posts";
@@ -79,5 +85,11 @@ public class PostController {
         User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("posts", postsDao.findByUserId(loggedInUser.getId()));
         return "posts/profile";
+    }
+
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id) {
+        postsDao.deleteById(id);
+        return "redirect:/posts";
     }
 }

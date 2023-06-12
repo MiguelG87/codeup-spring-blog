@@ -18,8 +18,6 @@
     <ul>
         <li th:each="category: ${post.categories}" th:text="${category.name}"></li>
     </ul>
-
-    <a class="btn btn-primary" th:href="@{/posts/{id}/edit (id = ${post.id})}">Edit</a>
 </div>
 <footer th:replace="partials/partials :: footer"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

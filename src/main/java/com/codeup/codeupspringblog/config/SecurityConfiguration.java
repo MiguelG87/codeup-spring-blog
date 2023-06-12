@@ -37,8 +37,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                         /* Pages that require authentication
-                         * only authenticated users can create and edit ads */
-                        .requestMatchers("/posts/create", "/posts/*/edit", "/profile").authenticated()
+                         * only authenticated users can create and edit Posts */
+                        .requestMatchers("/posts/create", "/posts/*/edit", "/profile", "posts/*/delete").authenticated()
                         /* Pages that do not require authentication
                          * anyone can visit the home page, register, login, and view ads */
                         .requestMatchers("/", "/posts", "/posts/*", "/sign-up", "/login").permitAll()

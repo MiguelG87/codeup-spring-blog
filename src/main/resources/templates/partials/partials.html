@@ -18,6 +18,18 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="!isAuthenticated()">
+                <li class="nav-item">
+                    <form th:action="@{/sign-up}" th:method="get">
+                        <button class="btn-link btn" style="margin-top: 8px">Sign-up</button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/login}" th:method="get">
+                        <button class="btn-link btn" style="margin-top: 8px">Login</button>
+                    </form>
+                </li>
+            </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
                 <li class="nav-item">
                     <form th:action="@{/profile}" th:method="get">
@@ -35,18 +47,6 @@
                     </form>
                 </li>
             </ul>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="!isAuthenticated()">
-                <li class="nav-item">
-                    <form th:action="@{/sign-up}" th:method="get">
-                        <button class="btn-link btn" style="margin-top: 8px">Sign-up</button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/login}" th:method="get">
-                        <button class="btn-link btn" style="margin-top: 8px">Login</button>
-                    </form>
-                </li>
-            </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -57,7 +57,7 @@
 <header th:fragment="header">
     <div class="card text-bg-info">
         <div class="card-header">
-            Header
+            Welcome! Here are all the posts!
         </div>
     </div>
 </header>
